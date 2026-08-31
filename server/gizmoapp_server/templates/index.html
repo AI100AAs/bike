@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Spoke &amp; Wrench | Bike repair, made clear</title>
+    <meta name="description" content="Interactive bike repair guides for everyday commuters.">
+    <meta name="theme-color" content="{{ theme_color }}">
+    <base href="{{ base_href }}">
+    <link rel="icon" href="{{ icon_url }}" sizes="192x192">
+    <link rel="stylesheet" href="{{ shared_asset_base }}base.css">
+    <link rel="stylesheet" href="{{ asset_base }}styles.css">
+  </head>
+  <body class="shell-body graphical-body">
+    <div class="app-frame public-frame graphical-frame">
+      <main class="app-shell" aria-label="Spoke and Wrench bike repair guides">
+        <header class="topbar">
+          <a class="brand" href="#top" aria-label="Spoke and Wrench home"><span class="brand-mark">↗</span><span>spoke <b>&amp;</b> wrench</span></a>
+          <div class="header-status"><span class="status-dot"></span> your garage companion</div>
+          <div class="header-actions">
+            <button class="icon-button" id="theme-toggle" type="button" title="Use dark mode" aria-label="Use dark mode">☾</button>
+          </div>
+        </header>
+
+        <section class="intro" id="top">
+          <div>
+            <p class="kicker">MAINTENANCE, WITHOUT THE MYSTERY</p>
+            <h1>Keep your ride<br><em>rolling.</em></h1>
+            <p class="intro-copy">Select a part of your bike to learn the fix. Clear steps, real-world tips, no gatekeeping.</p>
+          </div>
+        </section>
+
+        <section class="workspace">
+          <div class="bike-column">
+            <div class="section-heading"><span>01</span><h2>Find the part</h2></div>
+            <div class="bike-card">
+              <div class="bike-label">YOUR COMMUTER BIKE <span>•</span> TAP A PART TO EXPLORE</div>
+              <div class="bike-illustration" aria-label="Clickable diagram of a bicycle">
+                <svg viewBox="0 0 520 370" role="img" aria-labelledby="bike-title bike-description">
+                  <title id="bike-title">A commuter bicycle diagram with clickable components</title>
+                  <desc id="bike-description">Choose the front wheel, rear wheel, saddle, handlebar, brakes, chain, gears, or pedals to open a repair guide.</desc>
+                  <g class="bike-line" aria-hidden="true">
+                    <circle class="wheel-tire" cx="112" cy="228" r="79"/><circle class="wheel-tire" cx="410" cy="228" r="79"/>
+                    <circle class="wheel-rim" cx="112" cy="228" r="70"/><circle class="wheel-rim" cx="410" cy="228" r="70"/>
+                    <path class="wheel-spokes" d="M112 158v140M42 228h140M62 178l100 100M62 278l100-100M410 158v140M340 228h140M360 178l100 100M360 278l100-100"/>
+                    <path d="M112 228 190 113h82l58 115M190 113l-30-39M272 113l38-44 35 8M264 113 410 228M190 113l74 0M240 228 190 113M240 228h-44M240 228l-28-30"/>
+                    <path class="bike-accent" d="M112 228 190 113h82l58 115M190 113l74 0M240 228h-44"/>
+                    <path class="bike-detail" d="M39 196q73-32 146 0M337 196q73-32 146 0M190 74h-24M310 69l32 8 14-13M314 64l22-7"/>
+                    <path class="brake-detail" d="M103 161q9-12 18 0M401 161q9-12 18 0M112 161v67M410 161v67"/>
+                    <circle cx="190" cy="113" r="8"/><circle cx="240" cy="228" r="11"/><circle cx="272" cy="113" r="8"/>
+                    <circle class="chainring" cx="240" cy="228" r="22"/><circle class="chainring" cx="240" cy="228" r="5"/>
+                    <path class="pedal" d="M224 246l-18 12m34-12 18 12M203 258h-13m60 0h13"/>
+                  </g>
+                   <g class="component-hotspot" data-component="rear-wheel" tabindex="0" role="button" aria-label="Open rear wheel guide"><circle cx="112" cy="228" r="91"/><path class="callout-line" d="M72 315 91 303"/><text x="52" y="326">REAR WHEEL</text></g>
+                   <g class="component-hotspot" data-component="front-wheel" tabindex="0" role="button" aria-label="Open front wheel guide"><circle cx="410" cy="228" r="91"/><path class="callout-line" d="M450 315 431 303"/><text x="468" y="326">FRONT WHEEL</text></g>
+                   <g class="component-hotspot" data-component="brakes" tabindex="0" role="button" aria-label="Open brake guide"><circle cx="410" cy="161" r="34"/><path class="callout-line" d="M434 139 463 119"/><text x="486" y="116">BRAKES</text></g>
+                   <g class="component-hotspot" data-component="chain" tabindex="0" role="button" aria-label="Open chain guide"><circle cx="240" cy="228" r="49"/><path class="callout-line" d="M240 174v-22"/><text x="240" y="143">CHAIN</text></g>
+                   <g class="component-hotspot" data-component="gears" tabindex="0" role="button" aria-label="Open gear guide"><circle cx="272" cy="113" r="39"/><path class="callout-line" d="M299 91 326 76"/><text x="353" y="73">GEARS</text></g>
+                   <g class="component-hotspot" data-component="saddle" tabindex="0" role="button" aria-label="Open saddle guide"><rect x="169" y="61" width="49" height="25" rx="12"/><path class="callout-line" d="M169 73 137 54"/><text x="102" y="52">SADDLE</text></g>
+                   <g class="component-hotspot" data-component="handlebar" tabindex="0" role="button" aria-label="Open handlebar guide"><circle cx="333" cy="70" r="32"/><path class="callout-line" d="M350 47 378 29"/><text x="421" y="30">HANDLEBAR</text></g>
+                   <g class="component-hotspot" data-component="pedals" tabindex="0" role="button" aria-label="Open pedal guide"><circle cx="240" cy="228" r="28"/><path class="callout-line" d="M260 246 291 269"/><text x="323" y="273">PEDALS</text></g>
+                </svg>
+              </div>
+              <p class="bike-hint"><span>✦</span> Each marker opens a focused repair guide</p>
+            </div>
+             <div class="component-search"><label for="component-search-input">SEARCH COMPONENTS OR REPAIRS</label><div class="search-field"><span aria-hidden="true">⌕</span><input id="component-search-input" type="search" placeholder="Try “flat”, “seat”, or “shifting”" autocomplete="off"><kbd>/</kbd></div><div id="component-results" class="component-results" aria-live="polite"></div></div>
+             <div class="bookmarks-panel" aria-labelledby="bookmarks-heading">
+               <div class="bookmarks-heading"><span id="bookmarks-heading">SAVED FOR LATER</span><small id="bookmarks-count">0 saved</small></div>
+               <div id="bookmarks-list" class="bookmarks-list"><p class="bookmarks-empty">Bookmark a guide or step to find it here.</p></div>
+             </div>
+             <div class="quick-picks"><span>QUICK PICKS</span><button data-component="rear-wheel">Flat tire</button><button data-component="brakes">Squeaky brakes</button><button data-component="chain">Slipping chain</button><button data-component="saddle">Uncomfortable seat</button></div>
+          </div>
+
+          <div class="guide-column">
+              <div class="section-heading"><span>02</span><h2 id="guide-heading">Your guide</h2><span class="guide-count" id="guide-count">1 / 8</span></div>
+            <article class="guide-card">
+               <div class="guide-top"><div><span class="tag" id="guide-tag">WHEELS</span><h2 id="guide-title">Fix a flat tire</h2><p id="guide-description">Get back on the road with a simple tube repair.</p></div><div class="guide-actions"><button class="guide-action" id="bookmark-guide" type="button" aria-label="Bookmark this guide" title="Bookmark this guide">☆</button><button class="guide-action" id="print-guide" type="button" aria-label="Print this guide" title="Print this guide">⎙</button><div class="guide-icon" id="guide-icon">◎</div></div></div>
+              <div class="meta-row"><span>◷ <b id="guide-time">20 min</b></span><span>◆ <b id="guide-difficulty">Beginner</b></span><span>▣ <b id="guide-tools">Tire levers, pump</b></span></div>
+               <div class="steps-header"><span>REPAIR STEPS</span></div>
+              <div id="steps-list" class="steps-list"></div>
+               <div class="tip-box"><span>✦</span><div><b>GOOD TO KNOW</b><p id="guide-tip">Never use a screwdriver to remove a tire. It can pinch the tube and damage the rim.</p></div></div>
+               <form class="coach-box" id="coach-form">
+                  <div class="coach-heading"><span>ASK THE MECHANIC</span><small id="coach-context">About this repair</small></div>
+                  <div class="coach-input-row"><input id="coach-question" name="question" maxlength="500" placeholder="What should I check first?" autocomplete="off" required><button type="submit" id="coach-submit">Ask</button></div>
+                  <div class="coach-photo-row"><label class="photo-button" for="coach-image">Add a photo</label><input id="coach-image" name="image" type="file" accept="image/jpeg,image/png,image/webp,image/gif"><span id="coach-image-name">Optional: show the mechanic what you see</span><button class="photo-clear" id="coach-image-clear" type="button" hidden aria-label="Remove attached photo">×</button></div>
+                  <img class="coach-image-preview" id="coach-image-preview" alt="Attached bike photo preview" hidden>
+                 <p class="coach-answer" id="coach-answer" aria-live="polite">Ask a question about this component and get a focused tip.</p>
+               </form>
+             </article>
+          </div>
+        </section>
+        <footer><span>Built for the ride home.</span><span>Tip: take a photo before you take anything apart.</span><span class="course-attribution">Sample project developed for <a href="https://www.cs.ubc.ca/~kevinlb/teaching/ai100/" target="_blank" rel="noreferrer">UBC's AI 100: Introduction to Artificial Intelligence</a>.</span></footer>
+      </main>
+    </div>
+    <div id="app-error" class="app-error" role="alert" aria-live="assertive" hidden></div>
+
+    <script id="gizmoapp-config" type="application/json">{{ client_config | tojson }}</script>
+    <script src="{{ shared_asset_base }}boot.js"></script>
+    <script type="module" src="{{ asset_base }}main.js"></script>
+  </body>
+</html>
