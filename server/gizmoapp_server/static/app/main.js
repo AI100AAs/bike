@@ -11,7 +11,7 @@ const guides = {
   pedals: { tag: "PEDALS", title: "Check your pedals", description: "Keep the contact points secure and your crank turning smoothly.", keywords: "pedals crank loose clicking", icon: "⊛", time: "10 min", difficulty: "Beginner", tools: "15mm pedal wrench", tip: "Pedals are side-specific. The left pedal tightens counter-clockwise.", steps: [["Check for looseness", "Hold each pedal and rock it. Also check whether the crank arm moves independently."], ["Inspect the threads", "Remove the pedal if needed and look for crossed or damaged threads."], ["Tighten securely", "Grease clean threads, install the correct side, and tighten firmly without overdoing it."]] },
 };
 const bookmarks = new Set();
-let activeComponent = "rear-wheel";
+let activeComponent = null;
 let activeStep = null;
 let coachImageUrl = "";
 
@@ -48,7 +48,15 @@ function bootstrap() {
   runtime.markReady();
 }
 
-function selectComponent(component) { activeComponent = component; activeStep = null; renderGuide(); document.querySelector(".guide-card")?.scrollIntoView({ behavior: "smooth", block: "nearest" }); }
+function selectComponent(component) {
+  if (!guides[component]) return;
+  activeComponent = component;
+  activeStep = null;
+  document.body.classList.remove("guide-unselected");
+  document.querySelector(".guide-column").hidden = false;
+  renderGuide();
+  document.querySelector(".guide-card")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
 function renderComponentResults(query) {
   const results = document.getElementById("component-results");
   const term = query.trim().toLowerCase();

@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{{ shared_asset_base }}base.css">
     <link rel="stylesheet" href="{{ asset_base }}styles.css">
   </head>
-  <body class="shell-body graphical-body">
+  <body class="shell-body graphical-body guide-unselected">
     <div class="app-frame public-frame graphical-frame">
       <main class="app-shell" aria-label="Spoke and Wrench bike repair guides">
         <header class="topbar">
@@ -71,7 +71,7 @@
              <div class="quick-picks"><span>QUICK PICKS</span><button data-component="rear-wheel">Flat tire</button><button data-component="brakes">Squeaky brakes</button><button data-component="chain">Slipping chain</button><button data-component="saddle">Uncomfortable seat</button></div>
           </div>
 
-          <div class="guide-column">
+          <div class="guide-column" hidden>
               <div class="section-heading"><span>02</span><h2 id="guide-heading">Your guide</h2><span class="guide-count" id="guide-count">1 / 8</span></div>
             <article class="guide-card">
                <div class="guide-top"><div><span class="tag" id="guide-tag">WHEELS</span><h2 id="guide-title">Fix a flat tire</h2><p id="guide-description">Get back on the road with a simple tube repair.</p></div><div class="guide-actions"><button class="guide-action" id="bookmark-guide" type="button" aria-label="Bookmark this guide" title="Bookmark this guide">☆</button><button class="guide-action" id="print-guide" type="button" aria-label="Print this guide" title="Print this guide">⎙</button><div class="guide-icon" id="guide-icon">◎</div></div></div>
