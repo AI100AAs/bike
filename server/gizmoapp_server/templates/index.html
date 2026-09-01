@@ -27,6 +27,18 @@
             <h1>Keep your ride<br><em>rolling.</em></h1>
             <p class="intro-copy">Select a part of your bike to learn the fix. Clear steps, real-world tips, no gatekeeping.</p>
           </div>
+          <aside class="ride-check" aria-labelledby="ride-check-title">
+            <div class="ride-check-top"><span>BEFORE YOU ROLL</span><b id="ride-check-count">0 / 3</b></div>
+            <h2 id="ride-check-title">A 30-second safety check</h2>
+            <p>Tick these off before every commute.</p>
+            <div class="ride-check-list">
+              <label class="ride-check-item"><input type="checkbox"><span class="check-box" aria-hidden="true"></span><span><b>Tires feel firm</b><small>Squeeze both sidewalls.</small></span></label>
+              <label class="ride-check-item"><input type="checkbox"><span class="check-box" aria-hidden="true"></span><span><b>Brakes bite cleanly</b><small>Pull each lever before moving.</small></span></label>
+              <label class="ride-check-item"><input type="checkbox"><span class="check-box" aria-hidden="true"></span><span><b>Wheels are secure</b><small>Check both axles or quick releases.</small></span></label>
+            </div>
+            <div class="ride-check-progress" aria-hidden="true"><span id="ride-check-progress"></span></div>
+            <small class="ride-check-note" id="ride-check-note">Small checks make confident rides.</small>
+          </aside>
         </section>
 
         <section class="workspace">

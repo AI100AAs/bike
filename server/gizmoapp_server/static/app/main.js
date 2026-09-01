@@ -42,10 +42,20 @@ function bootstrap() {
   document.getElementById("coach-image-clear").addEventListener("click", clearCoachImage);
   document.getElementById("bookmark-guide").addEventListener("click", () => toggleBookmark(`guide:${activeComponent}`));
   document.getElementById("print-guide").addEventListener("click", () => window.print());
+  document.querySelectorAll(".ride-check-item input").forEach((input) => input.addEventListener("change", renderRideCheck));
   renderGuide();
   renderComponentResults("");
   renderBookmarks();
+  renderRideCheck();
   runtime.markReady();
+}
+
+function renderRideCheck() {
+  const checks = [...document.querySelectorAll(".ride-check-item input")];
+  const complete = checks.filter((check) => check.checked).length;
+  document.getElementById("ride-check-count").textContent = `${complete} / ${checks.length}`;
+  document.getElementById("ride-check-progress").style.width = `${(complete / checks.length) * 100}%`;
+  document.getElementById("ride-check-note").textContent = complete === checks.length ? "You are ready to roll." : "Small checks make confident rides.";
 }
 
 function selectComponent(component) {
