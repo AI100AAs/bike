@@ -169,6 +169,7 @@ function clearCoachImage() {
 function renderGuide() {
   const guide = guides[activeComponent];
   document.querySelectorAll(".component-hotspot").forEach((node) => node.classList.toggle("active", node.dataset.component === activeComponent));
+  if (!guide) return;
    document.getElementById("guide-count").textContent = `${Object.keys(guides).indexOf(activeComponent) + 1} / ${Object.keys(guides).length}`;
   ["tag", "title", "description", "time", "difficulty", "tools", "tip"].forEach((key) => document.getElementById(`guide-${key}`).textContent = guide[key]);
   document.getElementById("guide-icon").textContent = guide.icon;
