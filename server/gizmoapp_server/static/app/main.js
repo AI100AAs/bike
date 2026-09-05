@@ -14,6 +14,7 @@ const bookmarks = new Set();
 let activeComponent = null;
 let activeStep = null;
 let coachImageUrl = "";
+let coachHistory = [];
 
 function bootstrap() {
   const runtime = window.GizmoAppRuntime;
@@ -62,6 +63,8 @@ function selectComponent(component) {
   if (!guides[component]) return;
   activeComponent = component;
   activeStep = null;
+  coachHistory = [];
+  document.getElementById("coach-history").innerHTML = '<p class="coach-answer coach-empty" id="coach-answer">Ask a question about this component and get a focused tip.</p>';
   document.body.classList.remove("guide-unselected");
   document.querySelector(".guide-column").hidden = false;
   renderGuide();
@@ -122,28 +125,67 @@ async function askMechanic(event) {
   const questionInput = document.getElementById("coach-question");
   const imageInput = document.getElementById("coach-image");
   const question = questionInput.value.trim();
-  const answer = document.getElementById("coach-answer");
   const button = document.getElementById("coach-submit");
   if (!question) return;
   button.disabled = true;
-  answer.textContent = "Thinking through it...";
+  const pending = appendCoachMessage("mechanic", "Thinking through it...");
   try {
     const { apiBase } = window.GizmoAppRuntime.readConfig();
     const body = new FormData();
    body.append("component", activeComponent);
    body.append("question", question);
+   body.append("history", JSON.stringify(coachHistory));
    if (activeStep) {
      body.append("step_title", activeStep.title);
      body.append("step_instruction", activeStep.copy);
    }
     if (imageInput.files[0]) body.append("image", imageInput.files[0]);
     const result = await requestJson(`${apiBase}/coach`, { method: "POST", body, timeoutMs: 60000 });
-    answer.textContent = result.answer;
+    pending.remove();
+    coachHistory.push({ role: "user", content: question }, { role: "assistant", content: result.answer });
+    appendCoachMessage("user", question);
+    appendCoachMessage("mechanic", result.answer);
+    questionInput.value = "";
+    clearCoachImage();
   } catch (error) {
-    answer.textContent = error.message || "The mechanic is unavailable right now.";
+    pending.textContent = error.message || "The mechanic is unavailable right now.";
   } finally {
     button.disabled = false;
   }
+}
+
+function escapeHtml(value) {
+  return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(new RegExp(String.fromCharCode(34), "g"), "&quot;").replace(new RegExp(String.fromCharCode(39), "g"), "&#39;");
+}
+
+function renderMarkdown(markdown) {
+  const lines = escapeHtml(markdown).split("\n");
+  const output = [];
+  let listType = null;
+  const closeList = () => { if (listType) { output.push(`</${listType}>`); listType = null; } };
+  const inline = (line) => line.replace(new RegExp("\\x60([^\\x60]+)\\x60", "g"), "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>").replace(/__([^_]+)__/g, "<strong>$1</strong>").replace(/\*([^*]+)\*/g, "<em>$1</em>").replace(/_([^_]+)_/g, "<em>$1</em>");
+  lines.forEach((line) => {
+    const heading = line.match(/^(#{1,3})\s+(.+)$/);
+    const bullet = line.match(/^[-*]\s+(.+)$/);
+    const numbered = line.match(/^\d+[.]?\s+(.+)$/);
+    if (heading) { closeList(); output.push(`<h${heading[1].length}>${inline(heading[2])}</h${heading[1].length}>`); }
+    else if (bullet || numbered) { const nextType = bullet ? "ul" : "ol"; if (listType !== nextType) { closeList(); output.push(`<${nextType}>`); listType = nextType; } output.push(`<li>${inline((bullet || numbered)[1])}</li>`); }
+    else if (line.trim()) { closeList(); output.push(`<p>${inline(line)}</p>`); }
+    else closeList();
+  });
+  closeList();
+  return output.join("");
+}
+
+function appendCoachMessage(role, content) {
+  document.querySelector(".coach-empty")?.remove();
+  const message = document.createElement("div");
+  message.className = `coach-message coach-message-${role}`;
+  if (role === "mechanic") message.innerHTML = renderMarkdown(content);
+  else message.textContent = content;
+  document.getElementById("coach-history").append(message);
+  message.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  return message;
 }
 
 function previewCoachImage(event) {
@@ -208,9 +250,11 @@ function renderGuide() {
 
 function focusStepHelp(index, title, copy) {
   activeStep = { index, title, copy };
+  coachHistory = [];
+  document.getElementById("coach-history").innerHTML = '<p class="coach-answer coach-empty" id="coach-answer">Ask a question about this step and get a focused tip.</p>';
   document.getElementById("coach-context").textContent = `Step ${index + 1}: ${title}`;
   const question = document.getElementById("coach-question");
-  question.placeholder = `What is confusing about “${title}”?`;
+  question.placeholder = `What is confusing about "${title}"?`;
   question.focus({ preventScroll: true });
   document.getElementById("coach-form")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }

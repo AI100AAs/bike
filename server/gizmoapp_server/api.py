@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import base64
+import json
 import math
 import re
 import secrets
@@ -27,6 +28,8 @@ MAX_LABEL_LENGTH = 120
 MAX_DESCRIPTION_LENGTH = 2_000
 MAX_SEARCH_QUERY_LENGTH = 200
 MAX_COACH_QUESTION_LENGTH = 500
+MAX_COACH_HISTORY_MESSAGES = 10
+MAX_COACH_HISTORY_MESSAGE_LENGTH = 2_000
 MAX_COACH_IMAGE_BYTES = 8 * 1024 * 1024
 COACH_IMAGE_TYPES = {"image/jpeg", "image/png", "image/webp", "image/gif"}
 COACH_COMPONENTS = {
@@ -260,6 +263,7 @@ def register_api_routes(app: Flask) -> None:
                 "question": request.form.get("question"),
                 "step_title": request.form.get("step_title"),
                 "step_instruction": request.form.get("step_instruction"),
+                "history": request.form.get("history", "[]"),
             }
             image = request.files.get("image")
             if image and image.filename:
@@ -284,6 +288,19 @@ def register_api_routes(app: Flask) -> None:
             return _error_response(f"question must be at most {MAX_COACH_QUESTION_LENGTH} characters", 400)
         step_title = payload.get("step_title", "")
         step_instruction = payload.get("step_instruction", "")
+        history = payload.get("history", [])
+        if isinstance(history, str):
+            try:
+                history = json.loads(history)
+            except (TypeError, ValueError):
+                return _error_response("history must be valid JSON", 400)
+        if not isinstance(history, list) or len(history) > MAX_COACH_HISTORY_MESSAGES:
+            return _error_response(f"history must contain at most {MAX_COACH_HISTORY_MESSAGES} messages", 400)
+        for message in history:
+            if (not isinstance(message, dict) or message.get("role") not in {"user", "assistant"}
+                    or not isinstance(message.get("content"), str) or not message["content"].strip()
+                    or len(message["content"]) > MAX_COACH_HISTORY_MESSAGE_LENGTH):
+                return _error_response("history messages must contain a valid role and content", 400)
         if step_title and (not isinstance(step_title, str) or len(step_title) > 200):
             return _error_response("step_title must be at most 200 characters", 400)
         if step_instruction and (not isinstance(step_instruction, str) or len(step_instruction) > 500):
@@ -299,12 +316,14 @@ def register_api_routes(app: Flask) -> None:
             {"role": "system", "content": (
                 "You are a friendly bicycle mechanic coaching a commuter. Give concise, "
                 "practical, safety-first advice about " + COACH_COMPONENTS[component] + ". "
-                "Use plain language. Recommend a bike shop when specialist tools or "
+                "Use plain language and light Markdown (short headings, bullets, and bold emphasis) where it improves readability. "
+                "Recommend a bike shop when specialist tools or "
                 "experience are needed. Do not invent exact torque values."
                 + (f" The rider is currently on the step '{step_title}': {step_instruction} "
                    "Explain this step specifically and mention what a correct result should look or feel like."
                    if step_title else "")
             )},
+            *history,
             {"role": "user", "content": user_content},
         ]
         try:

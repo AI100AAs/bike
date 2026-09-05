@@ -65,3 +65,13 @@ footer { display: flex; justify-content: space-between; gap: 18px; padding: 46px
   .guide-top h2 { margin-top: 8px; font-size: 28px; }.guide-top p { color: #444; }
   .tag { color: #555; }.steps-list { margin-top: 14px; }.step { min-height: 58px; border-color: #ccc; }.step-copy small { color: #333; }.step-copy b { color: #111; }.step-number { color: #555; }.checkmark { border-color: #777; color: transparent; }
 }
+
+.coach-history { display: grid; gap: 9px; max-height: 360px; overflow-y: auto; margin-top: 10px; }
+.coach-message { margin: 0; padding: 9px 10px; border-radius: 7px; font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
+.coach-message-user { justify-self: end; max-width: 88%; color: var(--green); background: var(--lime); }
+.coach-message-mechanic { color: #c3ddd0; background: rgba(0,0,0,.12); }
+.coach-message-mechanic p { margin: 0 0 7px; }.coach-message-mechanic p:last-child { margin-bottom: 0; }
+.coach-message-mechanic h1, .coach-message-mechanic h2, .coach-message-mechanic h3 { margin: 0 0 6px; color: #fff; font-size: 14px; }
+.coach-message-mechanic ul, .coach-message-mechanic ol { margin: 0 0 7px; padding-left: 20px; }.coach-message-mechanic li { margin: 3px 0; }
+.coach-message-mechanic code { padding: 1px 4px; border-radius: 3px; color: var(--lime); background: rgba(0,0,0,.2); font-size: 11px; }
+.coach-empty { min-height: 18px; margin: 10px 0 0; color: #c3ddd0; font-size: 12px; line-height: 1.5; }
